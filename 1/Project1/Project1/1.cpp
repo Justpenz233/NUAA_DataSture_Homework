@@ -4,7 +4,6 @@
 #include <fstream>
 #include <vector>
 using namespace std;
-#define FilePath "F:\数据结构课设\1\Project1\Project1\01.txt"
 
 
 typedef struct student
@@ -26,11 +25,11 @@ typedef struct student
 		next = NULL;
 		pre = NULL;
 	}
-	bool operator ==(const student &b) {
-		if (memcmp(b.number, number, sizeof(number)) != 0) return 0;
-		if (memcmp(b.name, name, sizeof(name)) != 0) return 0;
-		if (score != b.score) return 0;
-		return 1;
+	bool operator ==(const student &b){
+		if (memcmp(b.number, number, strlen(number)) != 0) return false;
+		if (memcmp(b.name, name, strlen(name)) != 0) return false;
+		if (score != b.score) return false;
+		return true;
 	}
 	bool isPass() {
 		return score >= 60;
@@ -59,7 +58,6 @@ int menu_select()
 	} while (i<'0' || i>'6');
 	return (i - '0');
 }
-
 bool insert(ST *A, ST *T) {
 	if (A->next == NULL) {
 		A->next = T;
@@ -67,6 +65,9 @@ bool insert(ST *A, ST *T) {
 		return 1;
 	}
 	for (ST *p = A->next; p; p = p->next) {
+		if (*p == *T) {
+			return 0;
+		}
 		if (memcmp(p->name, T->name, sizeof(p->name)) >= 0) {
 			p->pre->next = T;
 			T->pre = p->pre;
@@ -80,16 +81,13 @@ bool insert(ST *A, ST *T) {
 			return 1;
 		}
 	}
-
 }
-
 bool isVaild(ST* T) {
 	for (int i = 0; i < strlen(T->number); i++) {
 		if (T->number[i] < '0' || T->number[i] > '9')
 			return 0;
 	}
 }
-
 void readFile(ST *A,ST *B) {
 	ifstream f;
 	string fname;
@@ -104,7 +102,7 @@ void readFile(ST *A,ST *B) {
 	while (!f.eof()) {
 		char tname[20], tid[20];
 		int tscore;
-		f >> tname >> tid >> tscore;
+		f >> tname >> tscore >> tid;
 		ST *T = new student(tname, tid, tscore);
 		if (T->isPass())
 			insert(A, T);
@@ -114,7 +112,6 @@ void readFile(ST *A,ST *B) {
 	f.close();
 	cout << "从文件导入成功。\n";
 }
-
 void showLink(ST *A,ST *B) {
 	printf("及格学生信息：\n");
 	for (ST *p = A->next; p; p = p->next)
@@ -123,31 +120,25 @@ void showLink(ST *A,ST *B) {
 	for (ST *p = B->next; p; p = p->next)
 		p->show();
 }
-
 void workInsert(ST* A,ST *B) {
 	char tname[20], tid[20];
 	int tscore;
-	cin >> tname >> tid >> tscore;
+	A->next->show();
+	cin >> tname >> tscore >> tid;
 	ST *T = new student(tname, tid, tscore);
-	ST *p, *t;
-	if (T->isPass())
-		t = A->next;
-	else
-		t = B->next;
-	p = t;
-	bool flag = 0;
-	while (p != NULL && p->next != NULL && memcmp(p->name, tname, sizeof(p->name)) <= 0) {
-		if (*p == *T) {
-			printf("学生信息已经存在:\n");
-			p->show();
-			return;
+	ST *t;
+	if (T->isPass()) t = A;
+	else t = B;
+	if (!insert(t, T)) {
+		for (ST *p = t->next; p; p = p->next) {
+			if (*p == *T) {
+				cout << "该学生已经存在\n";
+				return;
+			}
 		}
-		p = p->next;
 	}
-	insert(t, T);
-	printf("插入完成\n");
+	else printf("插入完成\n");
 }
-
 void Serch(ST *A,ST *B) {
 	char tname[20];
 	printf("请输入要查询的学生姓名: ");
@@ -251,7 +242,7 @@ int main()
 			workInsert(A, B);
 			system("pause");
 			break;
-		case 4://*******
+		case 4:
 			printf("调用删除函数 :\n");
 			DeleteWork(A, B);
 			system("pause");
@@ -260,7 +251,7 @@ int main()
 			printf("调用输入补考成绩函数:\n");
 			system("pause");
 			break;
-		case 6://********
+		case 6:
 			printf("调用查找函数 :\n");
 			Serch(A, B);
 			system("pause");
@@ -269,7 +260,6 @@ int main()
 			printf("再见\n");
 			system("pause");
 			exit(0);
-
 		}
 	}
 }
