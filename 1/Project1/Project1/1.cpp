@@ -163,8 +163,10 @@ void Serch(ST *A,ST *B) {
 	system("pause");
 }
 void DeleteNode(ST *T) {
-	T->pre->next = T->next;
-	T->next->pre = T->pre;
+	if(T->pre)
+		T->pre->next = T->next;
+	if(T->next)
+		T->next->pre = T->pre;
 	delete(T);
 }
 void getcin(int &t) {
@@ -178,43 +180,37 @@ void DeleteWork(ST* A,ST* B) {
 	char tname[20];
 	printf("请输入要删除的学生姓名: ");
 	cin >> tname;
-	ST *p = A->next;
-	bool flag = 0;
-	int t;
-	while (p != NULL && p->next != NULL && memcmp(p->name, tname, sizeof(p->name)) <= 0) {
-		if (memcmp(p->name, tname, sizeof(p->name) == 0)) {
+	int flag = 0;
+	for(ST *p = A->next;p;p = p->next){
+		if (memcmp(p->name, tname, strlen(tname)) == 0) {
 			flag = 1;
 			printf("找到学生信息：\n");
 			p->show();
 			printf("是否要删除？(0/1): ");
+			int t;
 			getcin(t);
 			if (t) {
-				ST *temp = p;
-				p = p->next;
-				DeleteNode(temp);
+				p = p->pre;
+				DeleteNode(p->next);
 			}
-			else p = p->next;
 		}
 	}
-	p = B->next;
-	while (p != NULL && p->next != NULL && memcmp(p->name, tname, sizeof(p->name)) <= 0) {
-		if (memcmp(p->name, tname, sizeof(p->name) == 0)) {
+	for (ST *p = B->next; p; p = p->next) {
+		if (memcmp(p->name, tname, strlen(tname)) == 0) {
 			flag = 1;
 			printf("找到学生信息：\n");
 			p->show();
 			printf("是否要删除？(0/1): ");
+			int t;
 			getcin(t);
 			if (t) {
-				ST *temp = p;
-				p = p->next;
-				DeleteNode(temp);
+				p = p->pre;
+				DeleteNode(p->next);
 			}
-			else p = p->next;
 		}
 	}
 	if (!flag)
-		printf("未找到姓名为: %s的学生\n", tname);
-	system("pause");
+		printf("未找到姓名为: %s 的学生\n", tname);
 }
 
 int main()
@@ -242,7 +238,7 @@ int main()
 			workInsert(A, B);
 			system("pause");
 			break;
-		case 4:
+		case 4://*******
 			printf("调用删除函数 :\n");
 			DeleteWork(A, B);
 			system("pause");
