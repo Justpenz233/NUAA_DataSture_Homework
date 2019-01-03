@@ -66,15 +66,21 @@ bool insert(ST *A, ST *T) {
 		T->pre = A;
 		return 1;
 	}
-	ST *p = A->next;
-	while (p!= NULL && p->next != NULL && memcmp(p->name, T->name,sizeof(p->name)) <= 0) {
-		p = p->next;
+	for (ST *p = A->next; p; p = p->next) {
+		if (memcmp(p->name, T->name, sizeof(p->name)) >= 0) {
+			p->pre->next = T;
+			T->pre = p->pre;
+			T->next = p;
+			p->pre = T;
+			return 1;
+		}
+		if (!p->next) {
+			p->next = T;
+			T->pre = p;
+			return 1;
+		}
 	}
-	T->next = p->next;
-	if (p->next != NULL) p->next->pre = T;
-	if (p->next != NULL) p->next = T;
-	T->pre = p;
-	return 1;
+
 }
 
 bool isVaild(ST* T) {
@@ -110,19 +116,12 @@ void readFile(ST *A,ST *B) {
 }
 
 void showLink(ST *A,ST *B) {
-	printf("及格学生信息：");
-	ST *p = A->next;
-	while (p->next) {
-		for (int i = 1; i <= 10 && p->next != NULL; i++)
-			p->show();
-	}
-	printf("不及格学生信息：");
-	p = B->next;
-	while (p->next) {
-		for (int i = 1; i <= 10 && p->next != NULL; i++)
-			p->show();
-	}
-
+	printf("及格学生信息：\n");
+	for (ST *p = A->next; p; p = p->next)
+		p->show();
+	printf("不及格学生信息：\n");
+	for (ST *p = B->next; p; p = p->next)
+		p->show();
 }
 
 void workInsert(ST* A,ST *B) {
