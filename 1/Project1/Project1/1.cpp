@@ -123,8 +123,12 @@ void showLink(ST *A,ST *B) {
 void workInsert(ST* A,ST *B) {
 	char tname[20], tid[20];
 	int tscore;
-	A->next->show();
-	cin >> tname >> tscore >> tid;
+	cout << "请输入学生姓名: ";
+	cin >> tname;
+	cout << "请输入学生学号: ";
+	cin >> tid;
+	cout << "请输入学生成绩: ";
+	cin >> tscore;
 	ST *T = new student(tname, tid, tscore);
 	ST *t;
 	if (T->isPass()) t = A;
@@ -139,28 +143,27 @@ void workInsert(ST* A,ST *B) {
 	}
 	else printf("插入完成\n");
 }
-void Serch(ST *A,ST *B) {
+bool Serch(ST *A,ST *B) {
 	char tname[20];
 	printf("请输入要查询的学生姓名: ");
 	cin >> tname;
-	ST *p = A->next;
 	bool flag = 0;
-	while (p != NULL && p->next != NULL && memcmp(p->name,tname, sizeof(p->name)) <= 0) {
-		if (memcmp(p->name, tname, sizeof(p->name) == 0)) {
+	for (ST *p = A->next; p; p = p->next){
+		if (memcmp(p->name, tname, strlen(p->name)) == 0) {
 			p->show();
 			flag = 1;
 		}
 	}
-	p = B->next;
-	while (p != NULL && p->next != NULL && memcmp(p->name, tname, sizeof(p->name)) <= 0) {
-		if (memcmp(p->name, tname, sizeof(p->name) == 0)) {
+	for (ST *p = B->next; p; p = p->next) {
+		if (memcmp(p->name, tname, strlen(p->name)) == 0) {
 			p->show();
 			flag = 1;
 		}
 	}
+	if (flag) return 1;
 	if (!flag)
 		printf("未找到姓名为: %s的学生\n", tname);
-	system("pause");
+	return 0;
 }
 void DeleteNode(ST *T) {
 	if(T->pre)
@@ -212,6 +215,31 @@ void DeleteWork(ST* A,ST* B) {
 	if (!flag)
 		printf("未找到姓名为: %s 的学生\n", tname);
 }
+void BuKao(ST* A,ST *B) {
+	char tname[20], tid[20];
+	int tscore;
+	bool flag = 0;
+	cout << "请输入学生姓名: ";
+	cin >> tname;
+	cout << "请输入学生学号: ";
+	cin >> tid;
+	cout << "请输入学生成绩: ";
+	cin >> tscore;
+	ST *T = new student(tname, tid, tscore);
+	for (ST *i = B->next; i; i = i->next) {
+		if (memcmp(tname, i->name, strlen(tname)) == 0 &&
+			memcmp(tid, i->number, strlen(tid)) == 0) {
+			flag = 1;
+			DeleteNode(i);
+			if(T->isPass()) insert(A, T);
+			else insert(B, T);
+			printf("插入完成\n");
+			return;
+		}
+	}
+	printf("不存在名字为:%s 学号为:%s 的需要补考学生。\n", tname, tid);
+	return;
+}
 
 int main()
 {
@@ -245,6 +273,7 @@ int main()
 			break;
 		case 5:
 			printf("调用输入补考成绩函数:\n");
+			BuKao(A,B);
 			system("pause");
 			break;
 		case 6:
