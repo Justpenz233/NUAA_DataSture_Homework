@@ -4,6 +4,8 @@
 #include <fstream>
 #include <vector>
 using namespace std;
+#define FilePath "F:\数据结构课设\1\Project1\Project1\01.txt"
+
 
 typedef struct student
 {
@@ -16,9 +18,13 @@ typedef struct student
 		memcpy(name, tname, sizeof(name));
 		memcpy(number, tnumber, sizeof(number));
 		score = tscore;
+		next = NULL;
+		pre = NULL;
 	}
 	student(char *tname) {
 		memcpy(name, tname, sizeof(name));
+		next = NULL;
+		pre = NULL;
 	}
 	bool operator ==(const student &b) {
 		if (memcmp(b.number, number, sizeof(number)) != 0) return 0;
@@ -55,6 +61,11 @@ int menu_select()
 }
 
 bool insert(ST *A, ST *T) {
+	if (A->next == NULL) {
+		A->next = T;
+		T->pre = A;
+		return 1;
+	}
 	ST *p = A->next;
 	while (p!= NULL && p->next != NULL && memcmp(p->name, T->name,sizeof(p->name)) <= 0) {
 		p = p->next;
@@ -77,8 +88,8 @@ void readFile(ST *A,ST *B) {
 	ifstream f;
 	string fname;
 	cout << "请输入文件名称/绝对路径:";
-	cin >> fname;
-	f.open(fname);
+	//cin >> fname;
+	f.open("01.txt");
 	if (f.bad()) {
 		cout << "未找到文件/文件不存在。\n";
 		system("pause");
@@ -96,7 +107,6 @@ void readFile(ST *A,ST *B) {
 	}
 	f.close();
 	cout << "从文件导入成功。\n";
-	system("pause");
 }
 
 void showLink(ST *A,ST *B) {
@@ -107,7 +117,7 @@ void showLink(ST *A,ST *B) {
 			p->show();
 	}
 	printf("不及格学生信息：");
-	ST *p = B->next;
+	p = B->next;
 	while (p->next) {
 		for (int i = 1; i <= 10 && p->next != NULL; i++)
 			p->show();
