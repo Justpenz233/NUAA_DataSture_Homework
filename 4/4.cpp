@@ -12,14 +12,14 @@ double GetInstance(int x,int y){
     double Sum = 0;
     for (int i = 1; i <= 4;i ++)
         Sum += pow(NodeSet[x][i] - Center[y][i], 2);
-    return sqrt(Sum);
+    return Sum;
 }
 
 int GetBelongTo(double Result[4]){
     double temp = INF;
     double No;
     for (int i = 1; i <= 3;i ++){
-        if(temp > Result[i]){
+        if(temp < Result[i]){
             temp = Result[i];
             No = i;
         }
@@ -52,7 +52,8 @@ void init(){
             Center[i][j] = NodeSet[i][j];
 }
 
-void work(){
+int work(){
+    int count = 0;
     do{
         bool flag = 0;
         Divide();//分类
@@ -68,10 +69,23 @@ void work(){
                 Center[i][j] = t;
             }
         }
+        for (int i = 1; i <= 3;i ++)
+            fm[i].clear();
+        count++;
     } while (flag);
+    return count;
+}
+void showAns(int count){
+    printf("共迭代%d次\n", count);
+    for (int i = 1; i <= 3;i ++){
+        printf("第%d类: \n");
+        for (int j = 0; j < fm[i].size();j ++)
+            printf("%d ", fm[i][j]);
+        printf("\n");
+    }
 }
 int main()
 {
     init();
-    work();
+    showAns(work());
 }
