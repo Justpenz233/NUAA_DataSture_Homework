@@ -11,7 +11,8 @@ using namespace std;
 struct Tree{
     char ch;
     int count;
-    
+    Tree left;
+    Tree right;
     Tree(char t){
         ch = t;
         count = 0;
@@ -26,11 +27,9 @@ struct Tree{
         count = l.count + r.count;
         ch = '\0';
     }
-    bool operator < (const Tree t) const {
+    bool operator < (const Tree t){
         return count < t.count;
     }
-    Tree *left;
-    Tree *right;
 };
 
 priority_queue <Tree> pq;
@@ -47,7 +46,7 @@ void init(){
     string s;
     printf("请输入文件绝对路径:");
     cin >> s;
-    FILE.open("F:\\DataStruteHomeWork\\5\\test.txt", ios::in);
+    FILE.open(s, ios::in);
     while(!FILE.eof()){
         FILE >> s;
         transform(s.begin(), s.end(), s.begin(), ::tolower);
@@ -56,7 +55,7 @@ void init(){
     }
     for (int i = 'a'; i <= 'z';i ++){
         if(CharNum[i] != 0)
-            pq.push(*(new Tree(i)));
+            pq.push(*(new TREE(i)));
     }
 }
 
@@ -84,6 +83,5 @@ void dfs(Tree pos,string s){
 int main()
 {
     init();
-    string ans = "";
-    dfs(work(),ans);
+    dfs(work());
 }
