@@ -8,37 +8,42 @@
 #include <queue>
 using namespace std;
 
-struct Tree{
+struct node{
     char ch;
     int count;
-    
-    Tree(char t){
+    node *left;
+    node *right;
+    node(char t){
         ch = t;
         count = 0;
     }
-    Tree(int t){
+    node(int t){
         count = t;
         ch = '\0';
     }
-    Tree(Tree l,Tree r){
-        left = l;
-        right = r;
-        count = l.count + r.count;
-        ch = '\0';
-    }
-    bool operator < (const Tree t) const {
+    bool operator < (const node &t) const {
         return count < t.count;
     }
-    Tree *left;
-    Tree *right;
 };
+
+struct Tree{
+    node me;
+    node lch;
+    node rch;
+    Tree(node me);
+    Tree(node l,node r){
+        lch = l;
+        rch = r;
+        me.ch = '/0';
+        me.count = l.count + r.count;
+    }
+    bool operator < (const Tree &t) const{
+        return me < t.me;
+    }
+}
 
 priority_queue <Tree> pq;
 
-Tree Union(Tree a,Tree b){
-    Tree t(a,b);
-    return t;
-}
 
 void init(){
     int CharNum[300];
@@ -56,7 +61,7 @@ void init(){
     }
     for (int i = 'a'; i <= 'z';i ++){
         if(CharNum[i] != 0)
-            pq.push(*(new Tree(i)));
+            pq.push(*(new Tree(*(new node(i)))));
     }
 }
 
@@ -68,7 +73,7 @@ Tree work(){
             return a;
         Tree b = pq.top();
         pq.pop();
-        pq.push(Union(a, b));
+        pq.push(Tree(a, b));
     }
 }
 
