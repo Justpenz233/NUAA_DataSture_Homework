@@ -8,6 +8,7 @@ using namespace std;
 char s[1000];
 int  i;
 
+//将字符串转换成double型数字
 double ChangeToNum(int & pos)
 {
 	double integer = 0.0;
@@ -34,6 +35,7 @@ double ChangeToNum(int & pos)
 	return integer + remainder;
 }
 
+//返回操作符ch的优先级
 int GetLevel(char ch)
 {
 	switch (ch)
@@ -51,6 +53,8 @@ int GetLevel(char ch)
 	};
 }
 
+//进行运算 a1 op a2
+//a1、a2为操作数 op为操作符
 double Operate(double a1, char op, double a2)
 {
 	switch (op)
@@ -66,10 +70,12 @@ double Operate(double a1, char op, double a2)
 	};
 }
 
+//运算主过程
+//维护一个操作符栈 一个操作数栈
 double calc()
 {
 
-	stack<char> optr;
+	stack<char> optr;//
 	stack<double> opnd;
 
 	optr.push('#');
@@ -95,7 +101,8 @@ double calc()
 				opnd.push(result);
 			}
 			optr.pop();
-		}
+		}//运算括号内的所有表达式
+
 		else if (s[i] >= '0' && s[i] <= '9'){
 			is_minus = false;
 			opnd.push(ChangeToNum(i));
@@ -116,7 +123,7 @@ double calc()
 
 				double result = Operate(a1, op, a2);
 				opnd.push(result);
-			}
+			}//当即将加入的运算符优先级大于栈顶，先运算栈内的运算符
 			optr.push(s[i]);
 			i++;
 		}
@@ -135,6 +142,10 @@ double calc()
 
 	return opnd.top();
 }
+
+//判断表达式是否合法的函数
+//若()数量不等不合法
+//若存在非+-*/或数字的字符 则为不合法
 bool judge() {
 	int l = 0, r = 0;
 	for (int i = 0; i < strlen(s); i++) {
@@ -150,6 +161,7 @@ bool judge() {
 	if (l != r) return 0;
 	return 1;
 }
+
 int main()
 {
 	while (cin >> s) {
