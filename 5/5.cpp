@@ -25,6 +25,7 @@ struct Tree{
         left = NULL;
         right = NULL;
     }
+    Tree(char tc, int ti) : ch(tc), count(ti), left(NULL), right(NULL){};
     Tree(){
         ch = '\0'; count = 0;
         left = NULL; right = NULL;
@@ -35,11 +36,13 @@ struct Tree{
     }
 };
 
-bool operator < (Tree* a,Tree *b){
-    return a->count < b->count;
-}
+struct comp{
+    bool operator ()(const Tree *a,const Tree *b) const {
+        return a->count > b->count;
+    }
+};
 
-priority_queue <Tree*> pq;
+priority_queue <Tree*,vector<Tree*>,comp> pq;
 
 
 void init(){
@@ -49,7 +52,7 @@ void init(){
     string s;
     printf("请输入文件绝对路径:");
     cin >> s;
-    FILE.open("test.txt", ios::in);
+    FILE.open(s, ios::in);
     if(!FILE.good()){
         printf("文件打开失败\n");
         exit(0);
@@ -60,9 +63,9 @@ void init(){
         for (int i = 0; i < s.length();i ++)
             CharNum[s[i]]++;
     }
-    for (int i = 'a'; i <= 'z';i ++){
+    for (char i = 'a'; i <= 'z';i ++){
         if(CharNum[i] != 0)
-            pq.push(new Tree(i));
+            pq.push(new Tree(i,CharNum[i]));
     }
 }
 
@@ -80,7 +83,7 @@ Tree* work(){
 
 void dfs(Tree* pos,string s){
     if(pos->ch != '\0'){
-        printf("%c : %s\n", pos->ch, s.c_str());
+        printf("%c\tCount: %d\tHUFFMAN_CODE: %s\n", pos->ch,pos->count,s.c_str());
         return;
     }
     dfs(pos->left, s + '0');
