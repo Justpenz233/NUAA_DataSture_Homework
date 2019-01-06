@@ -1,5 +1,16 @@
-This is the set of NUAA datasture homework of 1617001.
-1: Easy but complicated Link Node;
-2: Use stack to calculate segment
-3: Basic string operate && classic dfs problem.
-The last one is optional and from the HuaWei programing contest problems.
+##南京航空航天大学 1617001数据结构结课课程设计
+本项目包含作业内容、报告、源代码、测试样例(样例在各段代码文件夹内)，README部分记录部分题解、心得
+
+1. 简单略复杂的链表，使用双向链表，方便查找和删除，比较锻炼码力
+2. 栈实现表达式求值，详细算法流程这里可以看到[题解](http://baidu.com)。
+3. 字符串应用 + 搜索。枚举第一个数字的位数，那么搜索的过程中要么和上一个数字位数一样要么比上一个数字的位数多一，执行搜索过程即可。使用了C++ STL string。
+4. KNN算法入门，记录三个点集的时候使用了std::vector,比较繁琐的多维数组应用，算法并没有什么难度。不过提醒我还有个KNN的坑没填。
+5. HUFFMAN编码，每次取两个值最小的节点，于是使用堆维护。使用了std::priority_queue，顺便学习了一下自定义优先队里比较的几种方法。思考了很久怎么避免使用指针，比如定义struct的时候进行嵌套。
+```
+struct TREE{
+    int information;
+    TREE LeftChild;
+    TREE RightChild;
+}
+```
+当然不行了。思而不学则殆。
