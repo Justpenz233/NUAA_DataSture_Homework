@@ -8,41 +8,38 @@
 #include <queue>
 using namespace std;
 
-struct node{
+struct Tree{
     char ch;
     int count;
-    node *left;
-    node *right;
-    node(char t){
+    Tree *left;
+    Tree *right;
+    Tree(char t){
         ch = t;
         count = 0;
+        left = NULL;
+        right = NULL;
     }
-    node(int t){
+    Tree(int t){
         count = t;
         ch = '\0';
+        left = NULL;
+        right = NULL;
     }
-    bool operator < (const node &t) const {
-        return count < t.count;
+    Tree(){
+        ch = '\0'; count = 0;
+        left = NULL; right = NULL;
+    };
+    Tree(Tree *a,Tree *b):left(a),right(b){
+        ch = '\0';
+        count = a->count + b->count;
     }
 };
 
-struct Tree{
-    node me;
-    node lch;
-    node rch;
-    Tree(node me);
-    Tree(node l,node r){
-        lch = l;
-        rch = r;
-        me.ch = '/0';
-        me.count = l.count + r.count;
-    }
-    bool operator < (const Tree &t) const{
-        return me < t.me;
-    }
+bool operator < (Tree* a,Tree *b){
+    return a->count < b->count;
 }
 
-priority_queue <Tree> pq;
+priority_queue <Tree*> pq;
 
 
 void init(){
@@ -52,7 +49,11 @@ void init(){
     string s;
     printf("请输入文件绝对路径:");
     cin >> s;
-    FILE.open("F:\\DataStruteHomeWork\\5\\test.txt", ios::in);
+    FILE.open("test.txt", ios::in);
+    if(!FILE.good()){
+        printf("文件打开失败\n");
+        exit(0);
+    }
     while(!FILE.eof()){
         FILE >> s;
         transform(s.begin(), s.end(), s.begin(), ::tolower);
@@ -61,29 +62,29 @@ void init(){
     }
     for (int i = 'a'; i <= 'z';i ++){
         if(CharNum[i] != 0)
-            pq.push(*(new Tree(*(new node(i)))));
+            pq.push(new Tree(i));
     }
 }
 
-Tree work(){
+Tree* work(){
     while(!pq.empty()){
-        Tree a = pq.top();
+        Tree* a = pq.top();
         pq.pop();
         if(pq.empty())
             return a;
-        Tree b = pq.top();
+        Tree* b = pq.top();
         pq.pop();
-        pq.push(Tree(a, b));
+        pq.push(new Tree(a, b));
     }
 }
 
-void dfs(Tree pos,string s){
-    if(pos.ch != '\0'){
-        printf("%c : %s\n", pos.ch, s.c_str());
+void dfs(Tree* pos,string s){
+    if(pos->ch != '\0'){
+        printf("%c : %s\n", pos->ch, s.c_str());
         return;
     }
-    dfs(pos.left, s + '0');
-    dfs(pos.right, s + '1');
+    dfs(pos->left, s + '0');
+    dfs(pos->right, s + '1');
 }
 
 int main()

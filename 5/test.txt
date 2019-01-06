@@ -44,7 +44,7 @@ void init(){
     memset(CharNum, 0, sizeof(CharNum));
     ifstream FILE;
     string s;
-    printf("请输入文件绝对路径:");
+    printf(":");
     cin >> s;
     FILE.open(s, ios::in);
     while(!FILE.eof()){
