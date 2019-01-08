@@ -11,8 +11,10 @@ using namespace std;
 struct Tree{
     char ch;
     int count;
-    Tree *left;
-    Tree *right;
+    Tree *left;//左儿子
+    Tree *right;//右儿子
+    
+    //构造函数
     Tree(char t){
         ch = t;
         count = 0;
@@ -43,8 +45,9 @@ struct comp{
 };
 
 priority_queue <Tree*,vector<Tree*>,comp> pq;
+//小堆，用来维护树节点
 
-
+//初始化，读入文件及创建树的节点
 void init(){
     int CharNum[300];
     memset(CharNum, 0, sizeof(CharNum));
@@ -69,6 +72,8 @@ void init(){
     }
 }
 
+//每次从堆中取出两个元素，两个元素一定是权值最小的两个
+//新建立一个节点，节点权值为两个和，把一个设置为左儿子一个为右儿子，再放入堆中
 Tree* work(){
     while(!pq.empty()){
         Tree* a = pq.top();
@@ -81,6 +86,8 @@ Tree* work(){
     }
 }
 
+//DFS树打印答案
+//S存的是路径上的01，pos为当前所在节点的地址
 void dfs(Tree* pos,string s){
     if(pos->ch != '\0'){
         printf("%c\tCount: %d\tHUFFMAN_CODE: %s\n", pos->ch,pos->count,s.c_str());
