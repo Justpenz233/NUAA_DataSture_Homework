@@ -9,16 +9,6 @@ double Center[4][5]; // Center
 double NodeSet[160][5];
 int BelongTo[160];
 
-void debug(){
-    for (int i = 1; i <= 3;i ++){
-        printf("%d: ", i);
-        for (int j = 1; j <= 4;j ++){
-            printf("%lf    ", Center[i][j]);
-        }
-        printf("%d\n");
-    }
-}
-
 double GetInstance(int x,int y){
     double Sum = 0;
     for (int i = 1; i <= 4;i ++)
@@ -49,7 +39,7 @@ void Divide(){
 }
 void init(){
     ifstream FILE;
-    FILE.open("F:\\数据结构课设\\4\\Iris.txt");
+    FILE.open("C:\\Users\\Justpenz233\\Desktop\\DataStrure\\4\\Iris.txt");
     if(!FILE.good()){
         cout << "文件打开失败";
         exit(0);
@@ -82,7 +72,7 @@ int work(){
                 Center[i][j] = t;
             }
         }
-        if(flag)
+        if(!flag)
             return ++count;
         for (int i = 1; i <= 3;i ++)
             fm[i].clear();
