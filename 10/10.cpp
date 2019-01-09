@@ -557,11 +557,9 @@ void GetArray(int n,vector<int>&arr){
 
 int main()
 {
-   while(1){
-      int n;
+
+   for (int n = 500; n <= 1500;n += 500) {
       vector<int> arr;
-      printf("请输入数列元素的个数: ");
-      cin >> n;
       GetArray(n, arr);
       new BubbleSort(arr);
       new SelectSort(arr);
