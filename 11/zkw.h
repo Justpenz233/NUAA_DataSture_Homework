@@ -140,20 +140,13 @@ struct MaxFlow
 
    void update_flow(int minflow, int fa[])
    {
-      //从s开始
       int cnt = outCnt;
-      // printf("cnt=%d: minflow=%d\n",cnt, minflow);
       int u = t;
       while (u != s)
       {
-
-         //流量更新，减掉minflow
-         //  if(p[u]==s) printf("p_edeg=%d ,s.flow=%d ",p_edge[u], edges[p_edge[u]].flow);
-         //edges[p_edge[u]].flow -=minflow;
          E[p_edge[u]].flow -= minflow;
          if (u != s)
             res[cnt].push_back(u);
-         //   if(p[u]==s) printf("^^^^ , s.flow=%d \n",edges[p_edge[u]].flow);
          u = fa[u];
       }
       outFlow.push_back(minflow);
