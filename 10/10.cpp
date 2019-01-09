@@ -23,7 +23,7 @@ struct BubbleSort
       totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
       printf("\n冒泡排序的运行时间为%lf秒\n", totaltime);
       printf("比较次数:%d\t交换次数:%d\n\n", CompareTime, ChangeTime);
-   }
+   }//构造函数，同时是主过程
 
    void show(int flag){
       if(flag == 0)
@@ -36,11 +36,12 @@ struct BubbleSort
    }
 
    void work(){
-      bool isLoop = true;
+      bool isLoop = true;//记录是否发生过交换，没有交换则直接停止过程
       for (int i = arr.size();isLoop && i > 0; i --){
          isLoop = false;
          for (int j = 1; j < i; j ++){
             CompareTime++;
+            //冒泡算法主过程，和上一个比较大小
             if (arr[j] < arr[j - 1]) {
                swap(arr[j], arr[j - 1]);
                ChangeTime++;
@@ -71,7 +72,7 @@ struct SelectSort
       totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
       printf("\n选择排序的运行时间为%lf秒\n", totaltime);
       printf("比较次数:%d\t交换次数:%d\n\n", CompareTime, ChangeTime);
-   }
+   } //构造函数，同时是主过程
 
    void work(){
       for (int i = 0; i < arr.size(); ++i){
@@ -79,11 +80,11 @@ struct SelectSort
          for (int j = i + 1; j < arr.size(); ++j){
             CompareTime++;
             if (arr[j] < arr[minIndex])
-               minIndex = j;
+               minIndex = j;//找一个最小的
          }
          if (minIndex != i){
             ChangeTime++;
-            swap(arr[i], arr[minIndex]);
+            swap(arr[i], arr[minIndex]);//将最小的放到前面
          }
       }
    }
@@ -121,7 +122,7 @@ struct QuickSort
       totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
       printf("\n快速排序的运行时间为%lf秒\n", totaltime);
       printf("比较次数:%d\t交换次数:%d\n\n", CompareTime, ChangeTime);
-   }
+   } //构造函数，同时是主过程
 
    void work(int Left, int Right) {
       if (Left >= Right - 1)
@@ -149,12 +150,12 @@ struct QuickSort
             }
             ++i;
          }
-      }
+      }//将比flag小的放到其左侧，大的放到右侧
 
       ChangeTime++;
       arr[i] = flag;
-      work(Left, i);
-      work(j + 1, Right);
+      work(Left, i);//递归左侧
+      work(j + 1, Right);//递归右侧
    }
 
    void show(int flag)
@@ -190,11 +191,12 @@ struct InsertSort
       totaltime = (double)(finish - start) / CLOCKS_PER_SEC;
       printf("\n插入排序的运行时间为%lf秒\n", totaltime);
       printf("比较次数:%d\t交换次数:%d\n\n", CompareTime, ChangeTime);
-   }
+   } //构造函数，同时是主过程
 
    void work() {
       for (int i = 0; i < arr.size(); i++) {
          CompareTime++;
+         //如果不是递增的
          if (arr[i] < arr[i - 1]) {
             int t = arr[i];
             int j = i;
@@ -202,7 +204,7 @@ struct InsertSort
                CompareTime++;
                arr[j] = arr[j - 1];
                j--;
-            }
+            }//后挪一位
             ChangeTime++;
             arr[j] = t;
          }
@@ -255,6 +257,7 @@ struct MergeSort
       printf("\n");
    }
 
+   //将数组temp左右合并为一个
    void merge(int tmp[], int left, int mid, int right) {
       int i = left;
       int j = mid + 1;
@@ -282,9 +285,9 @@ struct MergeSort
       if (left >= right)
          return;
       int mid = left + (right - left) / 2;
-      CutWork(tmp, left, mid);
+      CutWork(tmp, left, mid);//递归操作
       CutWork(tmp, mid + 1, right);
-      merge(tmp, left, mid, right);
+      merge(tmp, left, mid, right);//合并左右序列
    }
 
    void work(){
@@ -395,6 +398,7 @@ struct HeapSort
             break;
       }
    }
+   //排序主过程
    void work()
    {
       int len = arr.size();
@@ -451,6 +455,7 @@ struct BinaryInsertSort
          temp = arr[i];
          left = 0;
          right = i - 1;
+         //二分查找插入的位置
          while (left <= right) {
             int mid = (left + right) / 2;
             CompareTime++;
@@ -459,6 +464,7 @@ struct BinaryInsertSort
             else
                left = mid + 1;
          }
+         //向后挪动一位
          for (j = i - 1; j >= right + 1; j--, ChangeTime++)
             arr[j + 1] = arr[j];
          arr[j + 1] = temp;
@@ -468,6 +474,7 @@ struct BinaryInsertSort
    }
 };
 
+//链式插入排序
 struct LinkInsertSort
 {
    int CompareTime = 0;
