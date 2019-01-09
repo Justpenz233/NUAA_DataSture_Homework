@@ -4,17 +4,18 @@
 #include <stack>
 #define MAXN 1000
 using namespace std;
-vector<int> v[MAXN];
-vector<int> w[MAXN];
-vector<int> C[MAXN];
+vector<int> v[MAXN];//存边的下一个点
+vector<int> w[MAXN];//存边的边权
+vector<int> C[MAXN];//存边的编号
 
-vector<int> ans1;
-vector<int> ans2;
+vector<int> ans1;//存关键活动
+vector<int> ans2;//存关键路径
 
 int ve[MAXN], vl[MAXN];
 int indegree[MAXN];
 int n, m;
 void FindInDegree(){
+   //计算每个点的入度
    memset(indegree, 0, sizeof(indegree));
    for (int i = 1; i <= n;i ++){
       for (int j = 0; j < v[i].size();i ++){
@@ -23,6 +24,7 @@ void FindInDegree(){
    }
 }
 
+//进行拓扑排序 结果存在T中
 bool TopSort(stack<int> &T){
    int count = 0, k;
    FindInDegree();
@@ -76,8 +78,11 @@ bool CriticalPath()
          dut = w[j][i]; //dut<j,k>
          if (vl[k] - dut < vl[j])
             vl[j] = vl[k] - dut;
+            //计算VL
       }
    }
+
+   //计算活动数据 求关键活动
    for (j = 1; j <= n;j ++) // 求ee,el和关键活动
       for (int i = 0; i < v[j].size(); i++) {
          k = v[j][i];
