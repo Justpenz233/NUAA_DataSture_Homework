@@ -5,10 +5,11 @@ using namespace std;
 #define INF 100000000
 #define MAXN 100
 double Graph[MAXN][MAXN];
-double dis[MAXN];
+double dis[MAXN];//dijstra中到起点的距离
 bool vis[MAXN];
 int n;
 
+//dijstra算法，u为起点
 void dijstrka(int u){
 
    for (int i = 1; i <= n;i ++)
@@ -26,10 +27,13 @@ void dijstrka(int u){
             minn = dis[j];
             start = j;
          }
-      }
+      }//找一个dis值最小的点
+
+
       vis[start] = 1;
       for (int j = 1; j <= n; j++)
          dis[j] = min(dis[j], dis[start] + Graph[start][j]);
+      //更新节点dis值
    }
    for (int i = 1; i <= n;i ++){
       printf("%lf\t", dis[i]);
@@ -48,7 +52,7 @@ void floyd(){
       for (int i = 1; i <= n;i ++)
          for (int j = 1; j <= n;j ++)
             f[i][j] = min(f[i][k] + f[k][j], f[i][j]);
-
+   //floyd矩阵运算
    
    for (int i = 1; i <= n;i ++){
       for (int j = 1; j <= n; j++)
