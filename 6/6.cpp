@@ -21,39 +21,43 @@ struct edge{
 
 struct Kruskal
 {
-	vector<edge> Graph;
+	vector<edge> Graph;//存边
 	int Vnum;
-	int fa[MAX_NODE];
+	int fa[MAX_NODE];//并查集
 
 	Kruskal(int k, vector<edge> t) : Vnum(k), Graph(t) {
 		for (int i = 1; i <= Vnum; i++)
 		  fa[i] = i;
-	};
+	};//构造函数
 
 	int find(int x){
 		while (x != fa[x])
 			x = fa[x] = fa[fa[x]];
 		return x;
-	}
+	}//寻找集合的代表元素
 
 	void work() {
 		vector<int> v[Vnum + 1];
 		int cnt = 0;
 		double ans = 0;
-		sort(Graph.begin(), Graph.end());
+		sort(Graph.begin(), Graph.end());//按边权排序
 		for (int i = 0; i < Graph.size();i ++){
 			int eu = find(Graph[i].from), ev = find(Graph[i].to);
-			if(eu == ev)
+			if(eu == ev)//如果边的两个点已经在树里面 判断下一条边
 				continue;
 			ans += Graph[i].weight;
 			fa[ev] = eu;
+
+			//建立邻接表
 			v[Graph[i].from].push_back(Graph[i].to);
 			v[Graph[i].to].push_back(Graph[i].from);
+
 			cnt++;
 			if(cnt == Vnum - 1)
 				break;
 		}
 
+		//打印图
 		printf("Kruskal生成的最小生成树权值和为: %lf\n", ans);
 		for (int i = 1; i <= Vnum; i++){
 			printf("%d: ", i);
@@ -69,6 +73,7 @@ struct Prim{
 	int Vnum;
 	vector<edge> Graph[MAX_NODE];
 
+	//构造函数
 	Prim(int k,vector<edge> t):Vnum(k) {
 		for (int i = 0; i < t.size();i ++){
 			Graph[t[i].from].push_back(t[i]);
@@ -78,14 +83,15 @@ struct Prim{
 
 	void work(){
 		vector<int> vG[Vnum + 1];
-		double dis[Vnum + 1];
-		int belong[Vnum + 1];
+		double dis[Vnum + 1];//dis为距离树的距离
+		int belong[Vnum + 1];//belong为距离树哪个点最近
 		bool vis[Vnum + 1];
 		memset(vis,0,sizeof(vis));
 		int cnt, tot = 0, now = 1;
 		double ans = 0;
 		for(int i = 2;i <= Vnum;i ++)
 			dis[i] = INF;
+		//初始化
 		for (int i = 0;i < Graph[1].size();i ++){
 			int v = Graph[1][i].to;
 			double w = Graph[1][i].weight;
@@ -93,7 +99,7 @@ struct Prim{
 				dis[v] = w;
 				belong[v] = 1;
 			}
-		}
+		}//找一个到点1最近的点
 
 		while (++tot < Vnum)
 		{
@@ -106,6 +112,7 @@ struct Prim{
 				}
 			}
 			ans += minn;
+			//找到一个到树最近的点now
 
 			vG[now].push_back(belong[now]);
 			vG[belong[now]].push_back(now);
@@ -133,6 +140,8 @@ struct Prim{
 	}
 };
 
+//Graph为图，Vnum为点的数量
+//读取文件
 void init(int &Vnum,vector<edge> &Graph) {
 	ifstream FILE;
 	FILE.open("F:\\DataStruteHomeWork\\6\\6.txt", ios::in);
