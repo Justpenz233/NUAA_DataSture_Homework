@@ -5,21 +5,23 @@
 using namespace std;
 struct TEL
 {
-   char phone[20];
-   char email[50];
-   char name[20];
-   char sex[10];
-   int count = 0;
+   char phone[20];//电话
+   char email[50];//邮箱
+   char name[20];//名字
+   char sex[10];//性别
+   int count = 0;//Hash次数
 
    TEL(string s){
       memcpy(phone, s.c_str(),sizeof(phone));
    }
    TEL(){};
+   //构造函数
 
    void getCin(istream &INPUT){
       string see;
       INPUT >> name >> sex >> phone >> email;
-   }
+   }//读入结构体
+
    void show(){
       printf("%s %s %s %s 散列次数:%d\n\n", name, sex, phone, email, count);
    }
@@ -31,14 +33,15 @@ struct TEL
       }
       hash %= 43;
       return abs((int)hash);
-   }
+   }//BDKR哈希，可以自然溢出
+
    unsigned int Hash2(){
       unsigned int hash = 0;
       for (int i = 0; i < strlen(phone); i++)
          hash = hash * 10 + (phone[i] - '0');
       hash %= 43;
       return abs((int)hash);
-   }
+   }//哈希2
 
    bool equal(TEL t){
       if(strlen(t.phone) != strlen(phone))
@@ -47,14 +50,16 @@ struct TEL
          if(t.phone[i] != phone[i])
             return 0;
       return 1;
-   }
+   }//判断两个信息是否相等
 };
 
 TEL* HashTable[43];
+//哈希表
 
+//查询是否存在
 int serch(TEL t){
-   int key = t.Hash1();
-   int step = t.Hash2();
+   int key = t.Hash1();//起始键值为key
+   int step = t.Hash2();//步长为step
    int hash = 0;
    while (HashTable[key] != NULL && (++hash) < 43){
       if (HashTable[key]->equal(t)) {
@@ -63,13 +68,14 @@ int serch(TEL t){
       }
       key += step;
       key %= 43;
-   }
+   }//遍历hash表
    if(hash == 43)
-      return -1;
+      return -1;//没找到
    else
       return key;
 }
 
+//查询某个电话是否存在，函数重载
 int serch(string s){
    TEL t(s);
    int key = t.Hash1();
@@ -89,6 +95,7 @@ int serch(string s){
       return key;
 }
 
+//插入一个信息到哈希表中
 bool insert(TEL *t)
 {
    int k = serch(*t);
@@ -101,6 +108,7 @@ bool insert(TEL *t)
    }
 }
 
+//从文件读取信息
 void init(){
    for (int i = 0; i < 43;i ++)
       HashTable[i] = NULL;
@@ -125,6 +133,7 @@ void init(){
    }
 }
 
+//求ASL
 void GetASL(){
    double NodeNum = 0;
    double HashTime = 0;
