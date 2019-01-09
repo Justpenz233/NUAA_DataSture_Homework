@@ -3,7 +3,7 @@
 #include <ctime>
 using namespace std;
 
-bool DisplayArray = 1;
+bool DisplayArray = 0;
 
 //ц╟ещеепР
 struct BubbleSort

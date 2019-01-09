@@ -102,8 +102,8 @@ void readFile(ST *A,ST *B){
 	ifstream f;
 	string fname;
 	cout << "请输入文件名称/绝对路径:";
-	//cin >> fname;
-	f.open("01.txt");
+	cin >> fname;
+	f.open(fname);
 	if (f.bad()) {
 		cout << "未找到文件/文件不存在。\n";
 		system("pause");

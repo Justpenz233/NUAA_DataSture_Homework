@@ -144,7 +144,10 @@ struct Prim{
 //读取文件
 void init(int &Vnum,vector<edge> &Graph) {
 	ifstream FILE;
-	FILE.open("F:\\DataStruteHomeWork\\6\\6.txt", ios::in);
+	printf("请输入文件路径: ");
+	string Fname;
+	cin >> Fname;
+	FILE.open(Fname, ios::in);
 	if(!FILE.good()) {
 		printf("文件打开失败，请检查文件是否存在。");
 		exit(0);
