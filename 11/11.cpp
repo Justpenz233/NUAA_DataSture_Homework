@@ -135,6 +135,7 @@ void Greedy()
          if(now < ans)
             ans = now;
          else
+
             SeverPos.erase(SeverPos.end() - 1);
       }
    }
@@ -146,5 +147,4 @@ int main()
    init();
    //SA();
    Greedy();
-   system("pause");
 }
